@@ -6,6 +6,8 @@ public class BlockManager : MonoBehaviour
 {
     [SerializeField] private float blockSize = 1f;
 
+    [SerializeField] BlockType blockType = BlockType.OneByOne;
+
     #region Singleton
     private static BlockManager _instance = null;
 
@@ -25,11 +27,11 @@ public class BlockManager : MonoBehaviour
     void PlaceBlockNear(Vector3 position)
     {
         Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(position);
-        GameObject block = InitBlock(nearestPoint);
+        GameObject block = InitBlock(nearestPoint, blockType);
         BoardManager.Instance.AddBlockToBoard(block);
     }
 
-    GameObject InitBlock(Vector3 blockPosition)
+    GameObject InitBlock(Vector3 blockPosition, BlockType type)
     {
         GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
         block.transform.position = new Vector3(blockPosition.x, blockSize / 2, blockPosition.z);
@@ -49,27 +51,23 @@ public class BlockManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            {
-                RaycastHit hitInfo;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out hitInfo))
-                {
-                    PlaceBlockNear(hitInfo.point);
-                }
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                PlaceBlockNear(hitInfo.point);
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            {
-                RaycastHit hitInfo;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out hitInfo))
-                {
-                    RemoveBlockNear(hitInfo.point);
-                }
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                RemoveBlockNear(hitInfo.point);
             }
         }
     }

@@ -29,11 +29,6 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         InitBoard();
-        Debug.Log($"Size x: {sizeExtent.x}");
-        Debug.Log($"Size z: {sizeExtent.z}");
-        Debug.Log($"origins: {origins}");
-
-        PrintBoard();
     }
 
     void InitBoard()
@@ -62,7 +57,7 @@ public class BoardManager : MonoBehaviour
     /// Return the removed block
     /// </summary>
     /// <param name="position"></param>
-    /// <returns></returns>
+    /// <returns>The GameObject to be removed from scene</returns>
     public GameObject RemoveBlockAt(Vector3 position)
     {
         int coordX = (int)position.x;
