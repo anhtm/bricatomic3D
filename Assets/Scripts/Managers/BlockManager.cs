@@ -9,10 +9,10 @@ public struct BlockSlot
     public GameObject blockPrefab;
 
     //Constructor (not necessary, but helpful)
-    public BlockSlot(BlockType type, GameObject go)
+    public BlockSlot(BlockType type, GameObject blockPrefab)
     {
         this.type = type;
-        this.blockPrefab = go;
+        this.blockPrefab = blockPrefab;
     }
 }
 
@@ -25,7 +25,7 @@ public class BlockManager : MonoBehaviour
 
 
     #region Singleton
-    private static BlockManager _instance = null;
+    private static BlockManager _instance;
 
     public static BlockManager Instance
     {
