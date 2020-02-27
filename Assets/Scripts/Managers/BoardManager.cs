@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// Manages data presentation of the board.
+/// Used to load board, save board
+/// </summary>
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] GameObject boardObj;
+    [SerializeField] GameObject blockPrefab;
 
     internal GameObject[,] board;
     internal Vector3 origins;
@@ -39,40 +43,54 @@ public class BoardManager : MonoBehaviour
         board = new GameObject[(int)sizeExtent.x * 2, (int)sizeExtent.z * 2];
     }
 
-    public void AddBlockToBoard(GameObject block)
+    public void PlaceBlockNear(Vector3 position)
     {
-        int coordX = (int)block.transform.position.x;
-        int coordZ = (int)block.transform.position.z;
-        if (board[coordX, coordZ] == null)
+        if (PositionIsValid(position))
         {
-            board[coordX, coordZ] = block;
-            Debug.Log($"BoardManager::AddBlockToBoard::Added block {block.transform.position} at [{coordX}, {coordZ}]\t");
-        } else
+            AddBlockAt(position);
+            Debug.Log($"BoardManager::PlaceBlockNear::Added block at [{(int)position.x}, {(int)position.z}].");
+        }
+        else
         {
-            Debug.Log($"BoardManager::AddBlockToBoard::Cannot add block at [{coordX}, {coordZ}]. Position is occupied.\t");
+            Debug.LogWarning($"BoardManager::PlaceBlockNear::Cannot add block at [{(int)position.x}, {(int)position.z}]\n. Location is either out of bounds or taken.");
         }
     }
 
-    /// <summary>
-    /// Return the removed block
-    /// </summary>
-    /// <param name="position"></param>
-    /// <returns>The GameObject to be removed from scene</returns>
-    public GameObject RemoveBlockAt(Vector3 position)
+    void AddBlockAt(Vector3 position)
+    {
+        Vector3 blockPosition = new Vector3(position.x, blockPrefab.GetComponent<Block>().DEFAULT_UNIT / 2, position.z);
+        GameObject block = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
+        board[(int)block.transform.position.x, (int)block.transform.position.z] = block;
+    }
+
+    public void RemoveBlockNear(Vector3 position)
+    {
+        if (PositionIsValid(position, false))
+        {
+            RemoveBlockAt(position);
+            Debug.Log($"BoardManager::RemoveBlockNear::Removed block at [{(int)position.x}, {(int)position.z}].");
+        }
+        else
+        {
+            Debug.LogWarning($"BoardManager::RemoveBlockNear::Cannot remove block at [{(int)position.x}, {(int)position.z}]\n. Location is either out of bounds or empty.");
+        }
+    }
+
+    public void RemoveBlockAt(Vector3 position)
     {
         int coordX = (int)position.x;
         int coordZ = (int)position.z;
-        if (board[coordX, coordZ] != null)
-        {
-            Debug.Log($"BoardManager::RemoveBlock::Removed block at [{coordX}, {coordZ}]\t. Block is now: {board[coordX, coordZ]}");
+        var blockToRemove = board[coordX, coordZ];
+        board[coordX, coordZ] = null;
+        Destroy(blockToRemove);
+    }
 
-            var blockToRemove = board[coordX, coordZ];
-            board[coordX, coordZ] = null;
-            return blockToRemove;
-        }
-        
-        Debug.Log($"BoardManager::RemoveBlock::Cannot remove block at [{coordX}, {coordZ}]. Position is already empty.\t");
-        return null;
+    private bool PositionIsValid(Vector3 position, bool toAdd = true)
+    {
+        int coordX = (int)position.x;
+        int coordZ = (int)position.z;
+        bool validForOperation = (board[coordX, coordZ] == null) == toAdd;
+        return coordX < board.GetLength(0) && coordZ < board.GetLength(1) && validForOperation;
     }
 
     void PrintBoard()

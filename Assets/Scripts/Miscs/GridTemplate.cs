@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Draw Gizmo grid and responsible for finding the nearest position to insert a block
+/// </summary>
 public class GridTemplate : MonoBehaviour
 {
     [SerializeField] private float gapSize = 1f;
