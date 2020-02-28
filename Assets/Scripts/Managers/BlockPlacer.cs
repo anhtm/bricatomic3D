@@ -34,6 +34,7 @@ public class BlockPlacer : MonoBehaviour
 
             if (Physics.Raycast(ray, out hitInfo))
             {
+                Debug.Log($"BlockPlacer::Add:Hit Info Point {hitInfo.point}");
                 Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(hitInfo.point);
                 BoardManager.Instance.PlaceBlockAt(nearestPoint);
             }
@@ -46,6 +47,7 @@ public class BlockPlacer : MonoBehaviour
 
             if (Physics.Raycast(ray, out hitInfo))
             {
+                Debug.Log($"BlockPlacer::Remove:Hit Info Point {hitInfo.point}");
                 Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(hitInfo.point);
                 BoardManager.Instance.RemoveBlockAt(nearestPoint);
             }
