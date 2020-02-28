@@ -8,8 +8,6 @@ using UnityEngine;
 public class BlockPlacer : MonoBehaviour
 {
 
-    [SerializeField] BlockType blockType = BlockType.OnexOne;
-
     #region Singleton
     private static BlockPlacer _instance = null;
 
@@ -26,20 +24,6 @@ public class BlockPlacer : MonoBehaviour
     }
     #endregion
 
-    //void PlaceBlockNear(Vector3 position)
-    //{
-    //    Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(position);
-    //    GameObject block = new Block(blockType, nearestPoint).CreateBlock();
-    //    BoardManager.Instance.AddBlockToBoard(block);
-    //}
-
-    //void RemoveBlockNear(Vector3 position)
-    //{
-    //    Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(position);
-    //    GameObject blockToRemove = BoardManager.Instance.RemoveBlockAt(nearestPoint);
-    //    Destroy(blockToRemove);
-    //}
-
     // Update is called once per frame
     void Update()
     {
@@ -51,7 +35,7 @@ public class BlockPlacer : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo))
             {
                 Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(hitInfo.point);
-                BoardManager.Instance.PlaceBlockNear(nearestPoint);
+                BoardManager.Instance.PlaceBlockAt(nearestPoint);
             }
         }
 
@@ -63,7 +47,7 @@ public class BlockPlacer : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo))
             {
                 Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(hitInfo.point);
-                BoardManager.Instance.RemoveBlockNear(nearestPoint);
+                BoardManager.Instance.RemoveBlockAt(nearestPoint);
             }
         }
     }

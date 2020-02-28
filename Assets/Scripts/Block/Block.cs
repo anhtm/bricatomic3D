@@ -36,13 +36,4 @@ public class Block : MonoBehaviour
         }
     }
 
-    public GameObject CreateBlock()
-    {
-        GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        block.transform.position = new Vector3(position.x, DEFAULT_UNIT / 2, position.z);
-        block.transform.localScale = scale;
-        blockObject = block;
-        return block;
-    }
-
 }

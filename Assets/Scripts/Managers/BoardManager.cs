@@ -8,7 +8,6 @@ using System.Collections.Generic;
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] GameObject boardObj;
-    [SerializeField] GameObject blockPrefab;
 
     internal GameObject[,] board;
     internal Vector3 origins;
@@ -43,11 +42,11 @@ public class BoardManager : MonoBehaviour
         board = new GameObject[(int)sizeExtent.x * 2, (int)sizeExtent.z * 2];
     }
 
-    public void PlaceBlockNear(Vector3 position)
+    public void PlaceBlockAt(Vector3 position)
     {
         if (PositionIsValid(position))
         {
-            AddBlockAt(position);
+            AddBlock(position);
             Debug.Log($"BoardManager::PlaceBlockNear::Added block at [{(int)position.x}, {(int)position.z}].");
         }
         else
@@ -56,18 +55,17 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void AddBlockAt(Vector3 position)
+    void AddBlock(Vector3 position)
     {
-        Vector3 blockPosition = new Vector3(position.x, blockPrefab.GetComponent<Block>().DEFAULT_UNIT / 2, position.z);
-        GameObject block = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
-        board[(int)block.transform.position.x, (int)block.transform.position.z] = block;
+        GameObject newBlock = BlockManager.Instance.InitBlock(position);
+        board[(int)position.x, (int)position.z] = newBlock;
     }
 
-    public void RemoveBlockNear(Vector3 position)
+    public void RemoveBlockAt(Vector3 position)
     {
         if (PositionIsValid(position, false))
         {
-            RemoveBlockAt(position);
+            RemoveBlock(position);
             Debug.Log($"BoardManager::RemoveBlockNear::Removed block at [{(int)position.x}, {(int)position.z}].");
         }
         else
@@ -76,7 +74,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void RemoveBlockAt(Vector3 position)
+    public void RemoveBlock(Vector3 position)
     {
         int coordX = (int)position.x;
         int coordZ = (int)position.z;

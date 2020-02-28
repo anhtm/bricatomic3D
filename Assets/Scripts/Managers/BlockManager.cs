@@ -16,13 +16,14 @@ public struct BlockSlot
     }
 }
 
+
 /// <summary>
 /// Manages block creation/deletion with different BlockTypes
 /// </summary>
 public class BlockManager : MonoBehaviour
 {
-    [SerializeField] public List<BlockSlot> BlookLookUpTable;
-
+    [SerializeField] public List<BlockSlot> BlockLookUpTable;
+    internal float DEFAULT_UNIT = 1.0f;
 
     #region Singleton
     private static BlockManager _instance;
@@ -40,8 +41,23 @@ public class BlockManager : MonoBehaviour
     }
     #endregion
 
-    public void CreateBlockFrom(BlockType type)
+    public GameObject GetRandomPrefab()
     {
-       
+        int random = Random.Range(0, 2);
+        BlockType chosenType = (BlockType)random;
+        foreach (var slot in BlockLookUpTable)
+        {
+            if (slot.type == chosenType)
+            {
+                return slot.blockPrefab;
+            }
+        }
+        return null;
+    }
+
+    public GameObject InitBlock(Vector3 position)
+    {
+        Vector3 blockPosition = new Vector3(position.x, DEFAULT_UNIT / 2, position.z);
+        return Instantiate(GetRandomPrefab(), blockPosition, Quaternion.identity);
     }
 }
