@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// </summary>
 public class BoardManager : MonoBehaviour
 {
-    [SerializeField] GameObject boardObj;
+    [SerializeField] internal GameObject boardObj;
 
     internal GameObject[,] board;
     internal Vector3 origins;

@@ -5,35 +5,39 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    [SerializeField] private BlockType type;
+    private Vector3 screenPoint;
+    private Vector3 offset = new Vector3();
 
-    internal Vector3 position;
-
-    internal Vector3 scale;
-
-    internal float DEFAULT_UNIT = 1.0f;
-
-    internal GameObject blockObject;
-
-    public Block() { }
-
-    public Block(BlockType type, Vector3 position)
+    void OnMouseDown()
     {
-        this.type = type;
-        this.position = position;
-        this.scale = GetScaleFromType();
+        CreateObjectOfCurrentType();
+        screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 cursorScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        offset = transform.position - Camera.main.ScreenToWorldPoint(cursorScreenPoint);
     }
 
-    private Vector3 GetScaleFromType()
+    void CreateObjectOfCurrentType()
     {
-        switch (type)
+        if (gameObject.tag == "model")
         {
-            case BlockType.OnexTwo:
-                return new Vector3(DEFAULT_UNIT, DEFAULT_UNIT, DEFAULT_UNIT * 2);
-            //case BlockType.OnexOne:
-            default:
-                return new Vector3(DEFAULT_UNIT, DEFAULT_UNIT, DEFAULT_UNIT);
+            Debug.Log("Created block from prototype");
+            //Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(gameObject.transform.position);
+            //BlockManager.Instance.InitBlock(gameObject, transform.position);
+            Instantiate(gameObject, transform.position, Quaternion.identity);
+            gameObject.tag = "Untagged"; // untag so it's no longer a model
         }
     }
 
+    void OnMouseDrag()
+    {
+        Vector3 cursorScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorScreenPoint) + offset;
+        transform.position = cursorPosition;
+    }
+
+    void OnMouseUp()
+    {
+        Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(gameObject.transform.position);
+        gameObject.transform.position = new Vector3(nearestPoint.x, nearestPoint.y + BlockManager.Instance.DEFAULT_UNIT / 2, nearestPoint.z);
+    }
 }
