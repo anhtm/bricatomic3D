@@ -777,6 +777,7 @@ GameObject:
   - component: {fileID: 1552122732}
   - component: {fileID: 1552122731}
   - component: {fileID: 1552122734}
+  - component: {fileID: 1552122735}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -861,6 +862,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c41d3edbda4341708e6b940bea4a4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragOrigin: {x: 0, y: 0, z: 0}
+  oldPos: {x: 0, y: 0, z: 0}
+  DragSpeed: 15
+  Target: {fileID: 153763268}
+  _cameraOffset: {x: 0, y: 0, z: 0}
+  SmoothFactor: 0.804
+  RotationsSpeed: 5
+--- !u!114 &1552122735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552122730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774b1cd68f5174d7ca1fee667177bd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DragSpeed: 15
+  Target: {fileID: 153763268}
+  SmoothFactor: 0.5
+  RotationsSpeed: 5
 --- !u!1 &1607968191
 GameObject:
   m_ObjectHideFlags: 0

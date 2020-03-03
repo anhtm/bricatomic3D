@@ -39,5 +39,8 @@ public class Block : MonoBehaviour
     {
         Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(gameObject.transform.position);
         gameObject.transform.position = new Vector3(nearestPoint.x, nearestPoint.y + BlockManager.Instance.DEFAULT_UNIT / 2, nearestPoint.z);
+        // TODO: Add newly created block to board manager
+        // TODO: Check for its validity before create a block
+        // if not valid, destroy gameobject
     }
 }
