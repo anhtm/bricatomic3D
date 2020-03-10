@@ -41,7 +41,7 @@ public class BlockManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject GetRandomPrefab()
+    public GameObject GetPrefab()
     {
         int random = Random.Range(0, 2);
         BlockType chosenType = (BlockType)random;
@@ -55,9 +55,26 @@ public class BlockManager : MonoBehaviour
         return null;
     }
 
+    public GameObject GetPrefab(BlockType type)
+    {
+        foreach (var slot in BlockLookUpTable)
+        {
+            if (slot.type == type)
+            {
+                return slot.blockPrefab;
+            }
+        }
+        return null;
+    }
+
     public GameObject InitBlock(Vector3 position)
     {
         Vector3 blockPosition = new Vector3(position.x, DEFAULT_UNIT / 2, position.z);
-        return Instantiate(GetRandomPrefab(), blockPosition, Quaternion.identity);
+        return Instantiate(GetPrefab(), blockPosition, Quaternion.identity);
+    }
+
+    public void InitBlock(BlockType type)
+    {
+        Instantiate(GetPrefab(type), new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z), Quaternion.identity);
     }
 }
