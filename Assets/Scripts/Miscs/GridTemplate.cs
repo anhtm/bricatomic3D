@@ -45,16 +45,20 @@ public class GridTemplate : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.grey;
+        float cubeSize = 0.05f;
         float gizmoXorigin = BoardManager.Instance.origins.x - BoardManager.Instance.sizeExtent.x;
         float gizmoZorigin = BoardManager.Instance.origins.z - BoardManager.Instance.sizeExtent.z;
 
         for (float x = gizmoXorigin; x < BoardManager.Instance.sizeExtent.x * 2; x += gapSize)
         {
-            for (float z = gizmoZorigin; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
+            for (float y = 0; y < BoardManager.Instance.boardHeightLimit; y += gapSize)
             {
-                var point = GetNearestPointOnGrid(new Vector3(x, 0f, z));
-                Gizmos.DrawSphere(point, 0.1f);
+                for (float z = gizmoZorigin; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
+                {
+                    var point = GetNearestPointOnGrid(new Vector3(x, y, z));
+                    Gizmos.DrawCube(point, new Vector3(cubeSize, cubeSize, cubeSize));
+                }
             }
         }
     }
