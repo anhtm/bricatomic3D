@@ -35,16 +35,12 @@ public class MouseActions : MonoBehaviour
         {
             oldPos = transform.position;
             dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);//Get the ScreenVector the mouse clicked
-            Debug.Log($"Mouse Down: Mouse position {Input.mousePosition}");
-            Debug.Log($"Mouse Down: Drag Origin {dragOrigin}");
         }
 
         if (!Input.GetMouseButton(2)) { return; }
 
         Vector3 newPos = Camera.main.ScreenToViewportPoint(Input.mousePosition) - dragOrigin;    //Get the difference between where the mouse clicked and where it moved
         transform.position = oldPos - newPos * DragSpeed; //Move the position of the camera to simulate a drag, speed * 10 for screen to worldspace conversion
-        Debug.Log($"Mouse Down: newPos {newPos}");
-        Debug.Log($"Mouse Down: transform.position {transform.position}");
     }
 
     void RotateCamera()
