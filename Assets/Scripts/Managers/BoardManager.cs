@@ -13,7 +13,7 @@ public class BoardManager : MonoBehaviour
     internal GameObject[,,] board;
     internal Vector3 origins;
     internal Vector3 sizeExtent;
-    internal int boardHeightLimit = 10; // Limit to 10 floors of blocks
+    internal int boardHeightLimit = 20; // Limit to 20 floors of blocks
 
     #region Singleton
     private static BoardManager _instance = null;
@@ -47,18 +47,23 @@ public class BoardManager : MonoBehaviour
     public void TryAddBlock(GameObject block)
     {
         Vector3 position = block.transform.position;
+
         try
         {
             if (IsValid(position))
             {
-                Debug.Log($"BoardManager::TryAddBlock::add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]");
                 board[(int)position.x, (int)position.y, (int)position.z] = block;
-            } else
+                Debug.Log($"BoardManager::TryAddBlock::add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]");
+                PrintBoard();
+            }
+            else
             {
                 Debug.LogWarning($"BoardManager::TryAddBlock::Cannot add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]\n. Location might be overlapping.");
+                Destroy(block);
             }
         } catch (IndexOutOfRangeException)
         {
+            Debug.LogWarning($"BoardManager::TryAddBlock::Cannot add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]\n. Location is out of range.");
             Destroy(block);
         }
     }
@@ -67,11 +72,12 @@ public class BoardManager : MonoBehaviour
     {
         Vector3 position = block.transform.position;
 
-        if (IsValid(position))
+        if (IsValid(position, false))
         {
             board[(int)position.x, (int)position.y, (int)position.z] = null;
             Destroy(block);
-        } else
+        }
+        else
         {
             Debug.LogWarning($"BoardManager::TryRemoveBlock::Cannot remove block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]\n. Location is either out of bounds or empty.");
         }
@@ -87,6 +93,7 @@ public class BoardManager : MonoBehaviour
                 board[(int)currentPos.x, (int)currentPos.y, (int)currentPos.z] = block;
                 // Remove old positioning 
                 board[(int)previousPos.x, (int)previousPos.y, (int)previousPos.z] = null;
+                Debug.Log($"BoardManager::TryMoveBlock::Moved block to new position [{(int)currentPos.x}, {(int)currentPos.y}, {(int)currentPos.z}]\n. Location might be overlapping.");
             }
             else
             {
@@ -101,20 +108,19 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private bool IsValid(Vector3 position)
+    private bool IsValid(Vector3 position, bool checkIsOverlap = true)
     {
         int coordX = (int)position.x;
         int coordY = (int)position.y;
         int coordZ = (int)position.z;
         bool isInBound = coordX < board.GetLength(0) && coordY < board.GetLength(1) && coordZ < board.GetLength(2);
-        return isInBound && !IsOverlap(position);
+        return checkIsOverlap ? isInBound && !IsOverlap(coordX, coordY, coordZ) : isInBound;
     }
 
-    private bool IsOverlap(Vector3 position)
+    private bool IsOverlap(int x, int y, int z)
     {
-        // TODO: Implement checking if block is overlapping other blocks.
-        // Note: There has to be some kind of method to calculate the space a block takes 
-        return false;
+        GameObject blockAtPosition = board[x, y, z];
+        return blockAtPosition != null;
     }
 
     void PrintBoard()

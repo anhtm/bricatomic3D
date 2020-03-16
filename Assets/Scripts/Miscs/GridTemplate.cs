@@ -28,7 +28,7 @@ public class GridTemplate : MonoBehaviour
 
     private void Start()
     {
-        //DrawBoardGround();
+        DrawBoardGround();
     }
 
     public Vector3 GetNearestPointOnGrid(Vector3 position)
@@ -50,6 +50,11 @@ public class GridTemplate : MonoBehaviour
     }
 
     private void OnDrawGizmos()
+    {
+        //DrawGizmos();
+    }
+
+    private void DrawGizmos()
     {
         Gizmos.color = Color.grey;
         float cubeSize = 0.05f;
