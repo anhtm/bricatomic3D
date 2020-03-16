@@ -43,7 +43,8 @@ public class Block : MonoBehaviour
     protected void OnMouseUp()
     {
         Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(gameObject.transform.position);
-        gameObject.transform.position = new Vector3(nearestPoint.x, nearestPoint.y + BlockManager.Instance.DEFAULT_UNIT / 2, nearestPoint.z);
+        Debug.Log("nearest point: " + nearestPoint);
+        gameObject.transform.position = new Vector3(nearestPoint.x, nearestPoint.y, nearestPoint.z);
 
         if (isModel())
         {

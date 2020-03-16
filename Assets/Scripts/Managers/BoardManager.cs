@@ -51,6 +51,7 @@ public class BoardManager : MonoBehaviour
         {
             if (IsValid(position))
             {
+                Debug.Log($"BoardManager::TryAddBlock::add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]");
                 board[(int)position.x, (int)position.y, (int)position.z] = block;
             } else
             {
