@@ -49,35 +49,42 @@ public class GridTemplate : MonoBehaviour
         return result;
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.grey;
-    //    float cubeSize = 0.05f;
-    //    float gizmoXorigin = BoardManager.Instance.origins.x - BoardManager.Instance.sizeExtent.x;
-    //    float gizmoZorigin = BoardManager.Instance.origins.z - BoardManager.Instance.sizeExtent.z;
+    private void OnDrawGizmos()
+    {
+        //DrawGizmos();
+    }
 
-    //    for (float x = gizmoXorigin; x < BoardManager.Instance.sizeExtent.x * 2; x += gapSize)
-    //    {
-    //        for (float y = 0; y < BoardManager.Instance.boardHeightLimit; y += gapSize)
-    //        {
-    //            for (float z = gizmoZorigin; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
-    //            {
-    //                var point = GetNearestPointOnGrid(new Vector3(x, y, z));
-    //                Gizmos.DrawCube(point, new Vector3(cubeSize, cubeSize, cubeSize));
-    //            }
-    //        }
-    //    }
-    //}
+    private void DrawGizmos()
+    {
+        Gizmos.color = Color.grey;
+        float cubeSize = 0.05f;
+        float gizmoXorigin = BoardManager.Instance.origins.x - BoardManager.Instance.sizeExtent.x;
+        float gizmoZorigin = BoardManager.Instance.origins.z - BoardManager.Instance.sizeExtent.z;
+
+        for (float x = gizmoXorigin; x < BoardManager.Instance.sizeExtent.x * 2; x += gapSize)
+        {
+            for (float y = 0; y < BoardManager.Instance.boardHeightLimit; y += gapSize)
+            {
+                for (float z = gizmoZorigin; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
+                {
+                    var point = GetNearestPointOnGrid(new Vector3(x, y, z));
+                    Gizmos.DrawCube(point, new Vector3(cubeSize, cubeSize, cubeSize));
+                }
+            }
+        }
+    }
 
     private void DrawBoardGround()
     {
-        float gizmoXorigin = BoardManager.Instance.origins.x - BoardManager.Instance.sizeExtent.x;
-        float gizmoZorigin = BoardManager.Instance.origins.z - BoardManager.Instance.sizeExtent.z;
-        for (float x = gizmoXorigin; x < BoardManager.Instance.sizeExtent.x * 2; x += gapSize)
+        float originX = BoardManager.Instance.origins.x - BoardManager.Instance.sizeExtent.x;
+        float originZ = BoardManager.Instance.origins.z - BoardManager.Instance.sizeExtent.z;
+        float originY = BoardManager.Instance.origins.y;
+
+        for (float x = originX; x < BoardManager.Instance.sizeExtent.x * 2; x += gapSize)
         {
-            for (float z = gizmoZorigin; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
+            for (float z = originZ; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
             {
-                var point = GetNearestPointOnGrid(new Vector3(x, 0, z));
+                var point = GetNearestPointOnGrid(new Vector3(x, originY, z));
                 Instantiate(ground, point, Quaternion.identity);
             }
         }

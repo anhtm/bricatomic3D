@@ -67,14 +67,9 @@ public class BlockManager : MonoBehaviour
         return null;
     }
 
-    public GameObject InitBlock(Vector3 position)
+    public GameObject InitBlock(BlockType type, Vector3 position)
     {
-        Vector3 blockPosition = new Vector3(position.x, DEFAULT_UNIT / 2, position.z);
-        return Instantiate(GetPrefab(), blockPosition, Quaternion.identity);
-    }
-
-    public void InitBlock(BlockType type)
-    {
-        Instantiate(GetPrefab(type), new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z), Quaternion.identity);
+        Vector3 blockPosition = new Vector3(position.x, position.y, position.z);
+        return Instantiate(GetPrefab(type), blockPosition, Quaternion.identity);
     }
 }
