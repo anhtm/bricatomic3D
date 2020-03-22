@@ -208,7 +208,7 @@ Transform:
   m_GameObject: {fileID: 153763268}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10, y: -1, z: 10}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -1329,9 +1329,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DragSpeed: 15
-  Target: {fileID: 153763268}
-  SmoothFactor: 0.5
+  SmoothFactor: 0.683
   RotationsSpeed: 5
+  Target: {fileID: 153763268}
+  zoomSensitivity: 11.1
 --- !u!1 &1607968191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1528,9 +1529,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DragSpeed: 30
-  Target: {fileID: 153763268}
   SmoothFactor: 0.5
   RotationsSpeed: 10
+  Target: {fileID: 153763268}
+  zoomSensitivity: 10
 --- !u!1 &1921727719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,13 +1567,13 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Strength: 0.472
+    m_Bias: 0
+    m_NormalBias: 0.93
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0

@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class MouseActions : MonoBehaviour
 {
+    [Header("Drag")]
     Vector3 dragOrigin;
     Vector3 oldPos;
-
     public float DragSpeed = 15.0f;
 
-    public GameObject Target;
-
-    private Vector3 _cameraOffset;
-
+    [Header("Rotate")]
+    Vector3 _cameraOffset;
     [Range(0.01f, 1.0f)]
     public float SmoothFactor = 0.5f;
-
     public float RotationsSpeed = 5.0f;
+    public GameObject Target;
+
+    [Header("Zoom")]
+    float minFov = 10;
+    float maxFoV = 100;
+    [Range(0, 50)]
+    public float zoomSensitivity = 10.0f;
 
     void Update()
     {
         DragCamera();
+        Zoom();
     }
 
     private void LateUpdate()
@@ -57,5 +62,13 @@ public class MouseActions : MonoBehaviour
         Vector3 newPos = Target.transform.position + _cameraOffset;
         transform.position = Vector3.Slerp(transform.position, newPos, SmoothFactor);
         transform.LookAt(Target.transform);
+    }
+
+    void Zoom()
+    {
+        float fov = Camera.main.fieldOfView;
+        fov += Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        fov = Mathf.Clamp(fov, minFov, maxFoV);
+        Camera.main.fieldOfView = fov;
     }
 }
