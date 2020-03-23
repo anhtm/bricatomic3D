@@ -1,7 +1,7 @@
 ﻿using System;
 public enum BlockAction
 {
-    Add,
-    Move,
-    Delete
+    Add = 0,
+    Move = 1,
+    Delete = 2
 }

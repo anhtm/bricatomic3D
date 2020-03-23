@@ -15,11 +15,6 @@ public class Block : MonoBehaviour
         offset = transform.position - Camera.main.ScreenToWorldPoint(cursorScreenPoint);
     }
 
-    void CreateObjectOfCurrentType()
-    {
-        Instantiate(gameObject, transform.position, Quaternion.identity);
-    }
-
     protected void OnMouseDrag()
     {
         Vector3 cursorScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
@@ -36,9 +31,11 @@ public class Block : MonoBehaviour
 
     protected void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0) && ModeManager.Instance.currentMode == BlockAction.Delete)
         {
-            UIManager.Instance.ToggleBlockContextPanel(gameObject);
+            // TODO: Map correct mouse action with mode
+            Debug.Log("Deleting block");
+            BoardManager.Instance.TryRemoveBlock(gameObject);
         }
     }
 
