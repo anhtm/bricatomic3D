@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Block Object", menuName = "Inventory System/Block")]
+[CreateAssetMenu(fileName = "New Block Object", menuName = "Block")]
 public class ScriptableBlock : ScriptableObject
 {
     public Sprite sprite;
