@@ -6,13 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("BlockCreationPanel")]
-    [SerializeField] Button CreateBtn;
 
-    [Header("BlockContextPanel")]
-    [SerializeField] public Button DeleteBtn;
-
-    GameObject blockCaller;
+    public Dropdown dropdown;
 
     #region Singleton
     private static UIManager _instance;
@@ -32,26 +27,19 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        CreateBtn.onClick.AddListener(CreateDefaultBlock);
-        DeleteBtn.onClick.AddListener(DeleteBlock);
+        dropdown.onValueChanged.AddListener(delegate {
+            myDropdownValueChangedHandler(dropdown);
+        });
     }
 
-    private void CreateDefaultBlock()
+    void Destroy()
     {
-        Vector3 defaultPosition = new Vector3(BoardManager.Instance.origins.x, 0, BoardManager.Instance.origins.z);
-        GameObject newBlock = BlockManager.Instance.InitBlock(BlockType.OnexOne, defaultPosition);
-        BoardManager.Instance.TryAddBlock(newBlock);
+        dropdown.onValueChanged.RemoveAllListeners();
     }
 
-    private void DeleteBlock()
+    private void myDropdownValueChangedHandler(Dropdown target)
     {
-        BoardManager.Instance.TryRemoveBlock(blockCaller);
-        blockCaller = null;
+        ModeManager.Instance.UpdateMode(target.value);
     }
 
-    public void ToggleBlockContextPanel(GameObject blockCaller)
-    {
-        this.blockCaller = blockCaller;
-        // TODO: Set Delete button to be active
-    }
 }
