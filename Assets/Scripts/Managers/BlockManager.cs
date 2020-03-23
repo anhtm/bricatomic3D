@@ -24,6 +24,7 @@ public class BlockManager : MonoBehaviour
 {
     [SerializeField] public List<BlockSlot> BlockLookUpTable;
     internal float DEFAULT_UNIT = 1.0f;
+    public GameObject currentPrefab;
 
     #region Singleton
     private static BlockManager _instance;
@@ -41,20 +42,6 @@ public class BlockManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject GetPrefab()
-    {
-        int random = Random.Range(0, 2);
-        BlockType chosenType = (BlockType)random;
-        foreach (var slot in BlockLookUpTable)
-        {
-            if (slot.type == chosenType)
-            {
-                return slot.blockPrefab;
-            }
-        }
-        return null;
-    }
-
     public GameObject GetPrefab(BlockType type)
     {
         foreach (var slot in BlockLookUpTable)
@@ -71,5 +58,33 @@ public class BlockManager : MonoBehaviour
     {
         Vector3 blockPosition = new Vector3(position.x, position.y, position.z);
         return Instantiate(GetPrefab(type), blockPosition, Quaternion.identity);
+    }
+
+    public GameObject InitBlock(Vector3 position)
+    {
+        return Instantiate(currentPrefab, position, Quaternion.identity);
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hitInfo;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                PlaceBlockNear(hitInfo.point);
+            }
+        }
+
+    }
+
+    void PlaceBlockNear(Vector3 position)
+    {
+        Debug.Log("PlaceBlockNear called");
+        Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(position);
+        GameObject block = InitBlock(nearestPoint);
+        BoardManager.Instance.TryAddBlock(block);
     }
 }

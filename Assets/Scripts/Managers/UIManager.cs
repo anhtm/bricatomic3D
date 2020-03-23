@@ -10,7 +10,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button CreateBtn;
 
     [Header("BlockContextPanel")]
-    [SerializeField] GameObject BlockContextPanel;
     [SerializeField] public Button DeleteBtn;
 
     GameObject blockCaller;
@@ -53,6 +52,6 @@ public class UIManager : MonoBehaviour
     public void ToggleBlockContextPanel(GameObject blockCaller)
     {
         this.blockCaller = blockCaller;
-        BlockContextPanel.SetActive(!BlockContextPanel.activeInHierarchy);
+        // TODO: Set Delete button to be active
     }
 }
