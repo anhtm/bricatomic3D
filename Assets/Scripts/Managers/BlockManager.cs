@@ -23,9 +23,11 @@ public struct BlockSlot
 public class BlockManager : MonoBehaviour
 {
     [SerializeField] public List<BlockSlot> BlockLookUpTable;
-    internal float DEFAULT_UNIT = 1.0f;
-    public GameObject currentPrefab;
+    [SerializeField] LayerMask layerMask;
 
+    internal float DEFAULT_UNIT = 1.0f;
+    internal GameObject currentPrefab;
+    
     #region Singleton
     private static BlockManager _instance;
 
@@ -72,7 +74,7 @@ public class BlockManager : MonoBehaviour
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Physics.Raycast(ray, out hitInfo, 1000.0f, layerMask))
             {
                 PlaceBlockNear(hitInfo.point);
             }
