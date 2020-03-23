@@ -76,6 +76,8 @@ public class GridTemplate : MonoBehaviour
 
     private void DrawBoardGround()
     {
+        GameObject container = new GameObject("GroundContainer");
+
         float originX = BoardManager.Instance.origins.x - BoardManager.Instance.sizeExtent.x;
         float originZ = BoardManager.Instance.origins.z - BoardManager.Instance.sizeExtent.z;
         float originY = BoardManager.Instance.origins.y;
@@ -85,7 +87,9 @@ public class GridTemplate : MonoBehaviour
             for (float z = originZ; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
             {
                 var point = GetNearestPointOnGrid(new Vector3(x, originY, z));
-                Instantiate(ground, point, Quaternion.identity);
+                GameObject cube = Instantiate(ground, point, Quaternion.identity);
+                cube.AddComponent<BoxCollider>();
+                cube.transform.parent = container.transform;
             }
         }
     }
