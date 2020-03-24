@@ -28,15 +28,4 @@ public class Block : MonoBehaviour
         gameObject.transform.position = new Vector3(nearestPoint.x, nearestPoint.y, nearestPoint.z);
         BoardManager.Instance.TryMoveBlock(gameObject, blockPreviousPos);
     }
-
-    protected void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0) && ModeManager.Instance.currentMode == BlockAction.Delete)
-        {
-            // TODO: Map correct mouse action with mode
-            Debug.Log("Deleting block");
-            BoardManager.Instance.TryRemoveBlock(gameObject);
-        }
-    }
-
 }
