@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3019970941330486020}
   - component: {fileID: 8851155436473847805}
   - component: {fileID: 2809988822594115967}
+  - component: {fileID: 7442123495476521082}
   m_Layer: 0
   m_Name: ice01
-  m_TagString: Untagged
+  m_TagString: block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,3 +93,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: -0.5, y: 0.5, z: 0.5}
+--- !u!114 &7442123495476521082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7127308106410277665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ee1f7e4897341b9a0f316117b01c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

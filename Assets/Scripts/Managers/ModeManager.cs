@@ -37,12 +37,25 @@ public class ModeManager : MonoBehaviour
         SetCursor();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            UpdateMode((int)BlockAction.Add);
+        } else if (Input.GetKeyDown(KeyCode.D))
+        {
+            UpdateMode((int)BlockAction.Delete);
+        } else if (Input.GetKeyDown(KeyCode.E))
+        {
+            UpdateMode((int)BlockAction.Move);
+        }
+    }
+
     void PopulateCursorMapper()
     {   
         for (var i = 0; i < cursorTextures.Count; i++)
         {
             cursorMapper.Add((BlockAction)i, cursorTextures[i]);
-            Debug.Log(cursorMapper[(BlockAction)i]);
         }
     }
 

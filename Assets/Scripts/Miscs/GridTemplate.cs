@@ -89,6 +89,7 @@ public class GridTemplate : MonoBehaviour
                 var point = GetNearestPointOnGrid(new Vector3(x, originY, z));
                 GameObject cube = Instantiate(ground, point, Quaternion.identity);
                 cube.AddComponent<BoxCollider>();
+                cube.tag = "Untagged";
                 cube.transform.parent = container.transform;
             }
         }

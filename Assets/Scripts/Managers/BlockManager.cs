@@ -2,30 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct BlockSlot
-{
-    public BlockType type;
-    public GameObject blockPrefab;
-
-    //Constructor (not necessary, but helpful)
-    public BlockSlot(BlockType type, GameObject blockPrefab)
-    {
-        this.type = type;
-        this.blockPrefab = blockPrefab;
-    }
-}
-
-
 /// <summary>
 /// Manages block creation/deletion with different BlockTypes
 /// </summary>
 public class BlockManager : MonoBehaviour
 {
-    [SerializeField] public List<BlockSlot> BlockLookUpTable;
     [SerializeField] LayerMask layerMask;
-
-    internal float DEFAULT_UNIT = 1.0f;
     internal GameObject currentPrefab;
     
     #region Singleton
@@ -44,24 +26,6 @@ public class BlockManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject GetPrefab(BlockType type)
-    {
-        foreach (var slot in BlockLookUpTable)
-        {
-            if (slot.type == type)
-            {
-                return slot.blockPrefab;
-            }
-        }
-        return null;
-    }
-
-    public GameObject InitBlock(BlockType type, Vector3 position)
-    {
-        Vector3 blockPosition = new Vector3(position.x, position.y, position.z);
-        return Instantiate(GetPrefab(type), blockPosition, Quaternion.identity);
-    }
-
     public GameObject InitBlock(Vector3 position)
     {
         return Instantiate(currentPrefab, position, Quaternion.identity);
@@ -69,24 +33,39 @@ public class BlockManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        bool isLeftClicked = Input.GetMouseButtonDown(0);
+        BlockAction mode = ModeManager.Instance.currentMode;
+
+        if (isLeftClicked)
         {
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            bool isHit = Physics.Raycast(ray, out hitInfo, 1000.0f, layerMask);
 
-            if (Physics.Raycast(ray, out hitInfo, 1000.0f, layerMask))
+            if (isHit && mode == BlockAction.Add && currentPrefab != null)
             {
                 PlaceBlockNear(hitInfo.point);
             }
-        }
-
+            else if (isHit && mode == BlockAction.Delete)
+            {
+                RemoveBlock(hitInfo);
+            } 
+        }   
     }
 
     void PlaceBlockNear(Vector3 position)
     {
-        Debug.Log("PlaceBlockNear called");
         Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(position);
         GameObject block = InitBlock(nearestPoint);
         BoardManager.Instance.TryAddBlock(block);
+    }
+
+    void RemoveBlock(RaycastHit hitInfo)
+    {
+        GameObject hitObject = hitInfo.collider.gameObject;
+        if (hitObject.tag == "block")
+        {
+            BoardManager.Instance.TryRemoveBlock(hitObject);
+        }
     }
 }
