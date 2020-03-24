@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    public Dropdown dropdown;
+    public Dropdown Dropdown;
+    public Button InGameMenuTrigger;
 
     #region Singleton
     private static UIManager _instance;
@@ -27,19 +28,33 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        dropdown.onValueChanged.AddListener(delegate {
-            myDropdownValueChangedHandler(dropdown);
+        Dropdown.onValueChanged.AddListener(delegate {
+            myDropdownValueChangedHandler(Dropdown);
         });
+
+        InGameMenuTrigger.onClick.AddListener(ToggleInGameMenu);
     }
 
     void Destroy()
     {
-        dropdown.onValueChanged.RemoveAllListeners();
+        Dropdown.onValueChanged.RemoveAllListeners();
+        InGameMenuTrigger.onClick.RemoveAllListeners();
     }
 
     private void myDropdownValueChangedHandler(Dropdown target)
     {
         ModeManager.Instance.UpdateMode(target.value);
+    }
+
+    private void ToggleInGameMenu()
+    {
+        if (MenuManager.Instance.currentMenu == MenuManager.Menu.None)
+        {
+            MenuManager.Instance.currentMenu = MenuManager.Menu.InGameMenu;
+        } else
+        {
+            MenuManager.Instance.currentMenu = MenuManager.Menu.None;
+        }
     }
 
 }
