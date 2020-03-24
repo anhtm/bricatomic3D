@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Manages block creation/deletion with different BlockTypes
 /// </summary>
 public class BlockManager : MonoBehaviour
 {
-    [SerializeField] LayerMask layerMask;
     internal GameObject currentPrefab;
     
     #region Singleton
@@ -38,9 +38,15 @@ public class BlockManager : MonoBehaviour
 
         if (isLeftClicked)
         {
+            // Check if the mouse was clicked over a UI element
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            bool isHit = Physics.Raycast(ray, out hitInfo, 1000.0f, layerMask);
+            bool isHit = Physics.Raycast(ray, out hitInfo);
 
             if (isHit && mode == BlockAction.Add && currentPrefab != null)
             {
