@@ -36,13 +36,12 @@ public class MenuManager : MonoBehaviour
 
 	void OnGUI()
 	{
-
-		GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
+		Rect uiLayout = new Rect(0, 0, Screen.width, Screen.height);
+		GUILayout.BeginArea(uiLayout);
 		GUILayout.BeginHorizontal();
 		GUILayout.FlexibleSpace();
 		GUILayout.BeginVertical();
 		GUILayout.FlexibleSpace();
-
 
 		switch (currentMenu)
         {
@@ -62,13 +61,11 @@ public class MenuManager : MonoBehaviour
 				return;
 		}
 
-
 		GUILayout.FlexibleSpace();
 		GUILayout.EndVertical();
 		GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
-
 	}
 
 
@@ -131,11 +128,11 @@ public class MenuManager : MonoBehaviour
 		GUILayout.Box("Select Save File");
 		GUILayout.Space(10);
 
-		foreach (Game g in SaveLoad.savedGames)
+		foreach (Game game in SaveLoad.savedGames)
 		{
-			if (GUILayout.Button(g.name))
+			if (GUILayout.Button(game.name))
 			{
-				Game.current = g;
+				Game.current = game;
 				SceneManager.LoadScene(1);
 			}
 		}
@@ -161,7 +158,7 @@ public class MenuManager : MonoBehaviour
     {
 		if (GUILayout.Button("Save & Quit"))
 		{
-			// TODO: Save board to current game and serialize it
+			BoardManager.Instance.SaveBoard();
 			SaveLoad.Save();
 			// Back to main menu scene
 			SceneManager.LoadScene(0);

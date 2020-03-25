@@ -1,5 +1,4 @@
-﻿using System;
-public enum BlockAction
+﻿public enum BlockAction
 {
     Add = 0,
     Move = 1,

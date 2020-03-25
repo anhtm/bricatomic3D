@@ -1,6 +1,9 @@
-﻿using System;
-public enum BlockType
+﻿public enum BlockType
 {
-    OnexOne,
-    OnexTwo
+    Ground,
+    Stone,
+    Ice,
+    Wall,
+    Water,
+    Lava
 }

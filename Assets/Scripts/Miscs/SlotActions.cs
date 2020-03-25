@@ -17,7 +17,6 @@ public class SlotActions : MonoBehaviour
     void SelectItem()
     {
         GameObject prefab = GetPrefab();
-        Debug.Log("Prefab chosen is " + prefab.name);
         BlockManager.Instance.currentPrefab = prefab;
     }
 
