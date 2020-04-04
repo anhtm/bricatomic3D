@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMenu: 0
+  font: {fileID: 12800000, guid: 60baf818699c148bc8e0374bc3dde142, type: 3}

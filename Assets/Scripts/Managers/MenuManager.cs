@@ -17,6 +17,7 @@ public class MenuManager : MonoBehaviour
 
 	public Menu currentMenu;
 
+	public Font font;
 
 	#region Singleton
 	private static MenuManager _instance;
@@ -34,8 +35,15 @@ public class MenuManager : MonoBehaviour
 	}
 	#endregion
 
+    void SetStyle()
+    {
+		GUI.skin.font = font;
+	}
+
 	void OnGUI()
 	{
+		SetStyle();
+
 		Rect uiLayout = new Rect(0, 0, Screen.width, Screen.height);
 		GUILayout.BeginArea(uiLayout);
 		GUILayout.BeginHorizontal();
@@ -58,7 +66,7 @@ public class MenuManager : MonoBehaviour
 				SetupInGameMenu();
 				break;
 			case Menu.None:
-				return;
+				break;
 		}
 
 		GUILayout.FlexibleSpace();
@@ -112,7 +120,7 @@ public class MenuManager : MonoBehaviour
 		{
 			//Save the current Game as a new saved Game
 			SaveLoad.Save();
-			SceneManager.LoadScene(1);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		}
 
 		GUILayout.Space(10);
@@ -133,7 +141,7 @@ public class MenuManager : MonoBehaviour
 			if (GUILayout.Button(game.name))
 			{
 				Game.current = game;
-				SceneManager.LoadScene(1);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 			}
 		}
 
@@ -151,8 +159,8 @@ public class MenuManager : MonoBehaviour
 		float windowHeightOffset = Screen.height / 4;
 		Rect windowRect = new Rect(windowWidthOffset, windowHeightOffset, windowWidthOffset * 2, windowHeightOffset * 2);
 
-		GUILayout.Window(0, windowRect, SetUpOverlay, "Settings");
-	}
+        GUILayout.Window(0, windowRect, SetUpOverlay, "Settings");
+    }
 
     void SetUpOverlay(int windowId)
     {
@@ -161,7 +169,7 @@ public class MenuManager : MonoBehaviour
 			BoardManager.Instance.SaveBoard();
 			SaveLoad.Save();
 			// Back to main menu scene
-			SceneManager.LoadScene(0);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 		}
 
 		if (GUILayout.Button("Cancel"))
