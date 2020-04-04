@@ -6,6 +6,7 @@ using System;
 /// Manages data presentation of the board.
 /// Used to load board, save board
 /// </summary>
+[System.Serializable]
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] internal GameObject boardObj;
@@ -31,9 +32,22 @@ public class BoardManager : MonoBehaviour
     }
     #endregion
 
+    private void Awake()
+    {
+        UpdateBoardSize();
+    }
+
     void Start()
     {
         InitBoard();
+    }
+
+
+    void UpdateBoardSize()
+    {
+        if (boardObj == null || Game.current == null) { return; }
+        float userChosenBoardSize = (float)Math.Round(Game.current.boardSize);
+        boardObj.transform.localScale = new Vector3(userChosenBoardSize, 0, userChosenBoardSize);
     }
 
     void InitBoard()
@@ -41,7 +55,19 @@ public class BoardManager : MonoBehaviour
         if (boardObj == null) { return; }
         origins = boardObj.GetComponent<Renderer>().bounds.center;
         sizeExtent = boardObj.GetComponent<Renderer>().bounds.extents;
-        board = new GameObject[(int)sizeExtent.x * 2, boardHeightLimit, (int)sizeExtent.z * 2];
+
+        if (Game.current.board == null)
+        {
+            board = new GameObject[(int)sizeExtent.x * 2, boardHeightLimit, (int)sizeExtent.z * 2];
+        } else
+        {
+            board = Game.current.board;
+        }
+    }
+
+    public void SaveBoard()
+    {
+        Game.current.board = board;
     }
 
     public void TryAddBlock(GameObject block)
