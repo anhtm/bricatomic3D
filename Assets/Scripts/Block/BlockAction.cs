@@ -2,5 +2,6 @@
 {
     Add = 0,
     Move = 1,
-    Delete = 2
+    Delete = 2,
+    None = 3
 }
