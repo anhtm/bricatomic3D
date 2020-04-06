@@ -48,7 +48,7 @@ public class BlockManager : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             bool isHit = Physics.Raycast(ray, out hitInfo);
 
-            if (isHit && mode == BlockAction.Add && currentBlock.prefab != null)
+            if (isHit && mode == BlockAction.Add && currentBlock != null)
             {
                 PlaceBlockNear(hitInfo.point);
             }

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class ModeManager : MonoBehaviour
 {
-    public BlockAction currentMode = BlockAction.Add;
+    public BlockAction currentMode = BlockAction.None;
 
     [SerializeField] List<Texture2D> cursorTextures = new List<Texture2D>(3);
+    [SerializeField] bool lockMode = true;
 
     private Dictionary<BlockAction, Texture2D> cursorMapper = new Dictionary<BlockAction, Texture2D>();
 
@@ -39,6 +40,8 @@ public class ModeManager : MonoBehaviour
 
     private void Update()
     {
+        if (lockMode) return;
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             UpdateMode((int)BlockAction.Add);
@@ -48,6 +51,9 @@ public class ModeManager : MonoBehaviour
         } else if (Input.GetKeyDown(KeyCode.E))
         {
             UpdateMode((int)BlockAction.Move);
+        } else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UpdateMode((int)BlockAction.None);
         }
     }
 
