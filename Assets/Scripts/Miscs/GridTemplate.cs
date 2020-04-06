@@ -10,22 +10,6 @@ public class GridTemplate : MonoBehaviour
     [SerializeField] private float gapSize = 1f;
     [SerializeField] GameObject ground;
 
-    #region Singleton
-    private static GridTemplate _instance = null;
-
-    public static GridTemplate Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GridTemplate>();
-            }
-            return _instance;
-        }
-    }
-    #endregion
-
     private void Start()
     {
         DrawBoardGround();
@@ -34,10 +18,9 @@ public class GridTemplate : MonoBehaviour
     public Vector3 GetNearestPointOnGrid(Vector3 position)
     {
         position -= transform.position;
-
-        int xCount = Mathf.RoundToInt(position.x / gapSize);
-        int yCount = Mathf.RoundToInt(position.y / gapSize);
-        int zCount = Mathf.RoundToInt(position.z / gapSize);
+        float xCount = Mathf.Round(position.x / gapSize);
+        float yCount = Mathf.Round(position.y / gapSize);
+        float zCount = Mathf.Round(position.z / gapSize);
 
         Vector3 result = new Vector3(
             xCount * gapSize,
@@ -74,7 +57,7 @@ public class GridTemplate : MonoBehaviour
         }
     }
 
-    private void DrawBoardGround()
+    internal void DrawBoardGround()
     {
         GameObject container = new GameObject("GroundContainer");
 
@@ -86,10 +69,9 @@ public class GridTemplate : MonoBehaviour
         {
             for (float z = originZ; z < BoardManager.Instance.sizeExtent.z * 2; z += gapSize)
             {
-                var point = GetNearestPointOnGrid(new Vector3(x, originY, z));
+                var point = new Vector3(x, originY, z);
                 GameObject cube = Instantiate(ground, point, Quaternion.identity);
-                cube.AddComponent<BoxCollider>();
-                cube.tag = "Untagged";
+                cube.tag = "Untagged"; 
                 cube.transform.parent = container.transform;
             }
         }

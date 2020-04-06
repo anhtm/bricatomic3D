@@ -16,13 +16,13 @@ public class SlotActions : MonoBehaviour
 
     void SelectItem()
     {
-        GameObject prefab = GetPrefab();
-        BlockManager.Instance.currentPrefab = prefab;
+        ScriptableBlock chosenBlock = GetBlock();
+        BlockManager.Instance.currentBlock = chosenBlock;
     }
 
-    GameObject GetPrefab()
+    ScriptableBlock GetBlock()
     {
         string childSprite = transform.GetChild(0).gameObject.GetComponent<Image>().sprite.name;
-        return InventoryManager.Instance.GetPrefabFrom(childSprite);
+        return InventoryManager.Instance.GetBlockBy(childSprite);
     }
 }

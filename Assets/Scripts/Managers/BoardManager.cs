@@ -1,17 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
-/// <summary>
-/// Manages data presentation of the board.
-/// Used to load board, save board
-/// </summary>
-[System.Serializable]
 public class BoardManager : MonoBehaviour
 {
     [SerializeField] internal GameObject boardObj;
 
-    internal GameObject[,,] board;
+    internal ScriptableBlock[,,] boardData;
     internal Vector3 origins;
     internal Vector3 sizeExtent;
     internal int boardHeightLimit = 20; // Limit to 20 floors of blocks
@@ -56,21 +52,52 @@ public class BoardManager : MonoBehaviour
         origins = boardObj.GetComponent<Renderer>().bounds.center;
         sizeExtent = boardObj.GetComponent<Renderer>().bounds.extents;
 
-        if (Game.current.board == null)
+        boardData = new ScriptableBlock[(int)sizeExtent.x * 2, boardHeightLimit, (int)sizeExtent.z * 2];
+
+        if (Game.current != null && Game.current.boardDataJSON != null)
         {
-            board = new GameObject[(int)sizeExtent.x * 2, boardHeightLimit, (int)sizeExtent.z * 2];
-        } else
-        {
-            board = Game.current.board;
+            LoadBoardDataAndSpawn(Game.current.boardDataJSON);
         }
     }
 
     public void SaveBoard()
     {
-        Game.current.board = board;
+        Game.current.boardDataJSON = FormatBoardDataToSave();
     }
 
-    public void TryAddBlock(GameObject block)
+    public ArrayList FormatBoardDataToSave()
+    {
+        ArrayList result = new ArrayList();
+        for (int i = 0; i < boardData.GetLength(0); i++)
+        {
+            for (int j = 0; j < boardData.GetLength(1); j++)
+            {
+                for (int k = 0; k < boardData.GetLength(2); k++)
+                {
+                    var data = boardData[i, j, k];
+                    if (data != null)
+                    {
+                        result.Add(new BlockData(data, new Vector3(i, j, k)));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public void LoadBoardDataAndSpawn(ArrayList boardDataJson)
+    {
+        foreach (BlockData bd in boardDataJson)
+        {
+            Vector3 position = bd.convertPositionData();
+            ScriptableBlock block = ScriptableObject.CreateInstance<ScriptableBlock>();
+            bd.jsonParseData(block);
+            boardData[(int)position.x, (int)position.y, (int)position.z] = block;
+            BlockManager.Instance.InitBlock(block, position);
+        }
+    }
+
+    public void TryAddBlock(ScriptableBlock metaData, GameObject block)
     {
         Vector3 position = block.transform.position;
 
@@ -78,9 +105,8 @@ public class BoardManager : MonoBehaviour
         {
             if (IsValid(position))
             {
-                board[(int)position.x, (int)position.y, (int)position.z] = block;
+                boardData[(int)position.x, (int)position.y, (int)position.z] = metaData;
                 Debug.Log($"BoardManager::TryAddBlock::add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]");
-                PrintBoard();
             }
             else
             {
@@ -100,7 +126,7 @@ public class BoardManager : MonoBehaviour
 
         if (IsValid(position, false))
         {
-            board[(int)position.x, (int)position.y, (int)position.z] = null;
+            boardData[(int)position.x, (int)position.y, (int)position.z] = null;
             Destroy(block);
         }
         else
@@ -116,9 +142,7 @@ public class BoardManager : MonoBehaviour
         {
             if (IsValid(currentPos))
             {
-                board[(int)currentPos.x, (int)currentPos.y, (int)currentPos.z] = block;
-                // Remove old positioning 
-                board[(int)previousPos.x, (int)previousPos.y, (int)previousPos.z] = null;
+                BoardDataMoveBlock(currentPos, previousPos);
                 Debug.Log($"BoardManager::TryMoveBlock::Moved block to new position [{(int)currentPos.x}, {(int)currentPos.y}, {(int)currentPos.z}]\n. Location might be overlapping.");
             }
             else
@@ -134,31 +158,38 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    private void BoardDataMoveBlock(Vector3 currentPos, Vector3 previousPos)
+    {
+        ScriptableBlock currentBlockData = boardData[(int)previousPos.x, (int)previousPos.y, (int)previousPos.z];
+        boardData[(int)currentPos.x, (int)currentPos.y, (int)currentPos.z] = currentBlockData;
+        // Remove old positioning
+        boardData[(int)previousPos.x, (int)previousPos.y, (int)previousPos.z] = null;
+    }
+
     private bool IsValid(Vector3 position, bool checkIsOverlap = true)
     {
         int coordX = (int)position.x;
         int coordY = (int)position.y;
         int coordZ = (int)position.z;
-        bool isInBound = coordX < board.GetLength(0) && coordY < board.GetLength(1) && coordZ < board.GetLength(2);
+        bool isInBound = coordX < boardData.GetLength(0) && coordY < boardData.GetLength(1) && coordZ < boardData.GetLength(2);
         return checkIsOverlap ? isInBound && !IsOverlap(coordX, coordY, coordZ) : isInBound;
     }
 
     private bool IsOverlap(int x, int y, int z)
     {
-        GameObject blockAtPosition = board[x, y, z];
-        return blockAtPosition != null;
+        return boardData[x, y, z] != null;
     }
 
     void PrintBoard()
     {
-        for (int i = 0; i < board.GetLength(0); i++)
+        for (int i = 0; i < boardData.GetLength(0); i++)
         {
-            for (int j = 0; j < board.GetLength(1); j++)
+            for (int j = 0; j < boardData.GetLength(1); j++)
             {
-                for (int k = 0; k < board.GetLength(2); k++)
+                for (int k = 0; k < boardData.GetLength(2); k++)
                 {
-                    var go = board[i, j, k];
-                    var info = go != null ? board[i, j, k].transform.position.ToString() : "NULL";
+                    var go = boardData[i, j, k];
+                    var info = go != null ? go.ToString() : "NULL";
                     if (go != null)
                     {
                         Debug.Log($"Position at [{i}, {j}, {k}] is " + info);
