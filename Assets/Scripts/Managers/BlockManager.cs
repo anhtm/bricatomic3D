@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class BlockManager : MonoBehaviour
 {
-    internal GameObject currentPrefab;
+    internal ScriptableBlock currentBlock;
     
     #region Singleton
     private static BlockManager _instance;
@@ -26,9 +26,9 @@ public class BlockManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject InitBlock(Vector3 position)
+    public GameObject InitBlock(ScriptableBlock block, Vector3 position)
     {
-        return Instantiate(currentPrefab, position, Quaternion.identity);
+        return Instantiate(block.prefab, position, Quaternion.identity);
     }
 
     void Update()
@@ -48,7 +48,7 @@ public class BlockManager : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             bool isHit = Physics.Raycast(ray, out hitInfo);
 
-            if (isHit && mode == BlockAction.Add && currentPrefab != null)
+            if (isHit && mode == BlockAction.Add && currentBlock.prefab != null)
             {
                 PlaceBlockNear(hitInfo.point);
             }
@@ -61,9 +61,9 @@ public class BlockManager : MonoBehaviour
 
     void PlaceBlockNear(Vector3 position)
     {
-        Vector3 nearestPoint = GridTemplate.Instance.GetNearestPointOnGrid(position);
-        GameObject block = InitBlock(nearestPoint);
-        BoardManager.Instance.TryAddBlock(block);
+        Vector3 nearestPoint = FindObjectOfType<GridTemplate>().GetNearestPointOnGrid(position);
+        GameObject block = InitBlock(currentBlock, nearestPoint);
+        BoardManager.Instance.TryAddBlock(currentBlock, block);
     }
 
     void RemoveBlock(RaycastHit hitInfo)

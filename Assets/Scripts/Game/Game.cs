@@ -7,7 +7,9 @@ public class Game { //don't need ": Monobehaviour" because we are not attaching 
 	public static Game current;
 	public int id = SaveLoad.savedGames.Count + 1;
 	public string name;
-	public GameObject[,,] board;
+    //public ScriptableBlock[,,] boardData;
+    public ArrayList boardDataJSON;
+
 	public float boardSize;
 
 	public Game () {

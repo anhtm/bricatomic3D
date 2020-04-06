@@ -51,10 +51,17 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public GameObject GetPrefabFrom(string name)
+    public ScriptableBlock GetBlockBy(string name)
     {
         ScriptableBlock block = blocks.Find(x => x.name == name);
-        return block.prefab;
+        return block;
+    }
+
+    public ScriptableBlock GetBlockBy(GameObject prefab)
+    {
+        Debug.Log("InventoryManager:GetBlockBy prefabutils" + UnityEditor.PrefabUtility.GetCorrespondingObjectFromSource(prefab));
+        ScriptableBlock block = blocks.Find(x => UnityEditor.PrefabUtility.GetCorrespondingObjectFromSource(prefab) == x.prefab);
+        return block;
     }
 
 }
