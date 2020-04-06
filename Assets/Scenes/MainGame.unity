@@ -937,10 +937,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.34919012, g: 0.37455386, b: 0.5566038, a: 1}
-    m_HighlightedColor: {r: 0.5458793, g: 0.58218354, b: 0.8207547, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    m_HighlightedColor: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
+    m_PressedColor: {r: 0.990566, g: 0.9127555, b: 0, a: 0.7254902}
+    m_SelectedColor: {r: 1, g: 0.8258381, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3682,7 +3682,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cursorTextures.Array.data[0]
       value: 
-      objectReference: {fileID: 2800000, guid: 2e71a8202d3b4a3448ec85ced5a40265, type: 3}
+      objectReference: {fileID: 2800000, guid: 8ea795c067613354898068091ffc7130, type: 3}
     - target: {fileID: 1631206438618300431, guid: 80c4816c47efb460db1658eb8b0d4423,
         type: 3}
       propertyPath: cursorTextures.Array.data[1]
