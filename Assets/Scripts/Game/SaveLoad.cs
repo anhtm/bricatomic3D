@@ -11,7 +11,6 @@ public static class SaveLoad {
 	public static void Save() {
         if (!savedGames.Contains(Game.current))
         {
-			Debug.Log("Adding game...");
 			savedGames.Add(Game.current);
 		}
 
