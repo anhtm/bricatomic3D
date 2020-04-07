@@ -3,5 +3,6 @@ public enum Axis
 {
     X,
     Y,
-    Z
+    Z,
+    None
 }
