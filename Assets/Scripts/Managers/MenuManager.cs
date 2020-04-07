@@ -19,6 +19,16 @@ public class MenuManager : MonoBehaviour
 
 	public Font font;
 
+	public int defaultFontSize = 36;
+
+	private GUILayoutOption[] itemLayoutOptions = new GUILayoutOption[] {
+			 GUILayout.MinWidth(Screen.width / 5),
+			 GUILayout.MaxWidth(Screen.width / 4),
+		};
+
+	private GUIStyle labelStyle;
+	private GUIStyle headerStyle;
+
 	#region Singleton
 	private static MenuManager _instance;
 
@@ -33,11 +43,26 @@ public class MenuManager : MonoBehaviour
 			return _instance;
 		}
 	}
-	#endregion
+    #endregion
 
     void SetStyle()
     {
 		GUI.skin.font = font;
+		GUI.skin.button.fontSize = defaultFontSize;
+		GUI.skin.window.fontSize = defaultFontSize;
+		labelStyle = new GUIStyle(GUI.skin.label)
+		{
+			fontSize = 36,
+			normal =
+			{
+				textColor = Color.black,
+			}
+		};
+		headerStyle = new GUIStyle(labelStyle)
+		{
+			fontStyle = FontStyle.Bold,
+			alignment = TextAnchor.MiddleCenter,
+		};
 	}
 
 	void OnGUI()
@@ -79,7 +104,8 @@ public class MenuManager : MonoBehaviour
 
     void SetUpMainMenu()
     {
-		if (GUILayout.Button("New Game"))
+
+        if (GUILayout.Button("New Game", itemLayoutOptions))
 		{
 			Game.current = new Game();
 			currentMenu = Menu.NewGame;
@@ -88,7 +114,7 @@ public class MenuManager : MonoBehaviour
 		GUILayout.Space(10);
 
 
-		if (GUILayout.Button("Continue"))
+		if (GUILayout.Button("Continue", itemLayoutOptions))
 		{
 			SaveLoad.Load();
 			currentMenu = Menu.Continue;
@@ -96,7 +122,7 @@ public class MenuManager : MonoBehaviour
 
 		GUILayout.Space(10);
 
-		if (GUILayout.Button("Quit"))
+		if (GUILayout.Button("Quit", itemLayoutOptions))
 		{
 			Application.Quit();
 		}
@@ -104,19 +130,33 @@ public class MenuManager : MonoBehaviour
 
     void SetUpNewGameMenu()
     {
-		GUILayout.Box("Game Settings");
+		GUILayout.Label("Game Settings", headerStyle, itemLayoutOptions);
+
 		GUILayout.Space(10);
 
 		if (Game.current != null)
 		{
-			GUILayout.Label("Name");
-			Game.current.name = GUILayout.TextField(Game.current.name, 20);
+			GUILayout.Label("Name", labelStyle, itemLayoutOptions);
+			Game.current.name = GUILayout.TextField(Game.current.name, 20, new GUIStyle(GUI.skin.textField) {
+                fontSize = defaultFontSize,
+            }, itemLayoutOptions);
 
-			GUILayout.Label("Board Size");
-			Game.current.boardSize = GUILayout.HorizontalSlider(Game.current.boardSize, 1.0f, 10.0f);
+			GUILayout.Label("Board Size", labelStyle, itemLayoutOptions);
+			Game.current.boardSize = GUILayout.HorizontalSlider(Game.current.boardSize, 1.0f, 10.0f,
+            new GUIStyle(GUI.skin.horizontalSlider) {
+                stretchHeight = true,
+                fixedHeight = 20,
+            },
+            new GUIStyle(GUI.skin.horizontalSliderThumb) {
+                fixedHeight = 20,
+                fixedWidth = 20,
+            },
+            itemLayoutOptions);
 		}
 
-		if (GUILayout.Button("Save"))
+		GUILayout.Space(20);
+
+		if (GUILayout.Button("Save", itemLayoutOptions))
 		{
 			//Save the current Game as a new saved Game
 			SaveLoad.Save();
@@ -125,7 +165,7 @@ public class MenuManager : MonoBehaviour
 
 		GUILayout.Space(10);
 
-		if (GUILayout.Button("Cancel"))
+		if (GUILayout.Button("Cancel", itemLayoutOptions))
 		{
 			currentMenu = Menu.MainMenu;
 		}
@@ -133,21 +173,21 @@ public class MenuManager : MonoBehaviour
 
 	void SetupContinueMenu()
 	{
-		GUILayout.Box("Select Save File");
-		GUILayout.Space(10);
+		GUILayout.Box("Select Save File", headerStyle, itemLayoutOptions);
+		GUILayout.Space(20);
 
 		foreach (Game game in SaveLoad.savedGames)
 		{
-			if (GUILayout.Button(game.name))
+			if (GUILayout.Button(game.name, itemLayoutOptions))
 			{
 				Game.current = game;
 				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 			}
 		}
 
-		GUILayout.Space(10);
+		GUILayout.Space(20);
 
-		if (GUILayout.Button("Cancel"))
+		if (GUILayout.Button("Cancel", itemLayoutOptions))
 		{
 			currentMenu = Menu.MainMenu;
 		}
@@ -157,14 +197,14 @@ public class MenuManager : MonoBehaviour
 	{
 		float windowWidthOffset = Screen.width / 4;
 		float windowHeightOffset = Screen.height / 4;
-		Rect windowRect = new Rect(windowWidthOffset, windowHeightOffset, windowWidthOffset * 2, windowHeightOffset * 2);
+		Rect windowRect = new Rect(windowWidthOffset, windowHeightOffset, windowWidthOffset * 2, windowHeightOffset);
 
-        GUILayout.Window(0, windowRect, SetUpOverlay, "Settings");
+		GUILayout.Window(0, windowRect, SetUpOverlay, "");
     }
 
     void SetUpOverlay(int windowId)
     {
-		if (GUILayout.Button("Save & Quit"))
+		if (GUILayout.Button("Save & Return"))
 		{
 			BoardManager.Instance.SaveBoard();
 			SaveLoad.Save();
