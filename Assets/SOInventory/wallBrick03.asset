@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a64d227144a43ce8e551a3167c84de, type: 3}
+  m_Name: wallBrick03
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 7d1a00627b11a40f1b29325c664558ae, type: 3}
+  prefab: {fileID: 7164136634040322624, guid: 931625762bb8a4a869b63a6551dc408c, type: 3}
+  name: wallBrick03
+  id: 18
