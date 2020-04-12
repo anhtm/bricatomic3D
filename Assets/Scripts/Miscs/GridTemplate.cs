@@ -24,10 +24,15 @@ public class GridTemplate : MonoBehaviour
 
         Vector3 result = new Vector3(
             xCount * gapSize,
-            yCount * gapSize,
+            Mathf.Round(yCount * gapSize),
             zCount * gapSize);
 
         result += transform.position;
+
+        if (result.y < 0)
+        {
+            Debug.Log("GetNearestPointOnGrid::y" + result.y);
+        }
 
         return result;
     }

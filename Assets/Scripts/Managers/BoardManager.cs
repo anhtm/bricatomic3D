@@ -100,22 +100,24 @@ public class BoardManager : MonoBehaviour
     public void TryAddBlock(ScriptableBlock metaData, GameObject block)
     {
         Vector3 position = block.transform.position;
+        int yPos = Mathf.RoundToInt(position.y);
 
         try
         {
             if (IsValid(position))
             {
-                boardData[(int)position.x, (int)position.y, (int)position.z] = metaData;
-                Debug.Log($"BoardManager::TryAddBlock::add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]");
+                
+                boardData[(int)position.x, yPos, (int)position.z] = metaData;
+                Debug.Log($"BoardManager::TryAddBlock::add block at [{(int)position.x}, {yPos}, {(int)position.z}]");
             }
             else
             {
-                Debug.LogWarning($"BoardManager::TryAddBlock::Cannot add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]\n. Location might be overlapping.");
+                Debug.LogWarning($"BoardManager::TryAddBlock::Cannot add block at [{(int)position.x}, {yPos}, {(int)position.z}]\n. Location might be overlapping.");
                 Destroy(block);
             }
         } catch (IndexOutOfRangeException)
         {
-            Debug.LogWarning($"BoardManager::TryAddBlock::Cannot add block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]\n. Location is out of range.");
+            Debug.LogWarning($"BoardManager::TryAddBlock::Cannot add block at [{(int)position.x}, {yPos}, {(int)position.z}]\n. Location is out of range.");
             Destroy(block);
         }
     }
@@ -123,33 +125,36 @@ public class BoardManager : MonoBehaviour
     public void TryRemoveBlock(GameObject block)
     {
         Vector3 position = block.transform.position;
+        int yPos = Mathf.RoundToInt(position.y);
 
         if (IsValid(position, false))
         {
-            boardData[(int)position.x, (int)position.y, (int)position.z] = null;
+            boardData[(int)position.x, yPos, (int)position.z] = null;
             Destroy(block);
         }
         else
         {
-            Debug.LogWarning($"BoardManager::TryRemoveBlock::Cannot remove block at [{(int)position.x}, {(int)position.y}, {(int)position.z}]\n. Location is either out of bounds or empty.");
+            Debug.LogWarning($"BoardManager::TryRemoveBlock::Cannot remove block at [{(int)position.x}, {yPos}, {(int)position.z}]\n. Location is either out of bounds or empty.");
         }
     }
 
     public void TryMoveBlock(GameObject block, Vector3 previousPos)
     {
         Vector3 currentPos = block.transform.position;
+        int yPos = Mathf.RoundToInt(currentPos.y);
+
         try
         {
             if (IsValid(currentPos))
             {
                 BoardDataMoveBlock(currentPos, previousPos);
-                Debug.Log($"BoardManager::TryMoveBlock::Moved block to new position [{(int)currentPos.x}, {(int)currentPos.y}, {(int)currentPos.z}]\n. Location might be overlapping.");
+                Debug.Log($"BoardManager::TryMoveBlock::Moved block to new position [{(int)currentPos.x}, {yPos}, {(int)currentPos.z}]\n. Location might be overlapping.");
             }
             else
             {
                 // Reposition the block back to its previous location
                 block.transform.position = previousPos;
-                Debug.LogWarning($"BoardManager::TryMoveBlock::Cannot move block to [{(int)currentPos.x}, {(int)currentPos.y}, {(int)currentPos.z}]\n. Location might be overlapping.");
+                Debug.LogWarning($"BoardManager::TryMoveBlock::Cannot move block to [{(int)currentPos.x}, {yPos}, {(int)currentPos.z}]\n. Location might be overlapping.");
             }
         }
         catch (IndexOutOfRangeException)
@@ -169,8 +174,9 @@ public class BoardManager : MonoBehaviour
     private bool IsValid(Vector3 position, bool checkIsOverlap = true)
     {
         int coordX = (int)position.x;
-        int coordY = (int)position.y;
+        int coordY = Mathf.RoundToInt(position.y);
         int coordZ = (int)position.z;
+
         bool isInBound = coordX < boardData.GetLength(0) && coordY < boardData.GetLength(1) && coordZ < boardData.GetLength(2);
         return checkIsOverlap ? isInBound && !IsOverlap(coordX, coordY, coordZ) : isInBound;
     }
