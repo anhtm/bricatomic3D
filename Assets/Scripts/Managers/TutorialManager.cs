@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages the tutorial UI at the beginning of the game
+/// </summary>
 public class TutorialManager : MonoBehaviour
 {
     [SerializeField] string[] instructions;
@@ -11,13 +12,15 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] float panelTimeout = 3f;
     private int currentInstructionIndex = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         PopulateInstructions();
         StartCoroutine(ActivateInstruction(currentInstructionIndex));
     }
 
+    /// <summary>
+    /// Add text to UI according to instructions array
+    /// </summary>
     private void PopulateInstructions()
     {
         for (int i = 0; i < instructions.Length; i++)
@@ -28,9 +31,9 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Move to next instruction when currentMode is updated
         if ((int) ModeManager.Instance.currentMode == currentInstructionIndex)
         {
             currentInstructionIndex++;

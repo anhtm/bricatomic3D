@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// A component of Inventory Panel
+/// <summary>
+/// Manages populating and finding block types in inventory panel
+/// </summary>
 public class InventoryManager : MonoBehaviour
 {
 
     public List<ScriptableBlock> blocks;
 
-    int size = 9;
+    int size;
 
     #region Singleton
     private static InventoryManager _instance;
@@ -36,6 +38,9 @@ public class InventoryManager : MonoBehaviour
         PopulateInventoryUI();
     }
 
+    /// <summary>
+    /// Automatically populate sprite images of inventory panel
+    /// </summary>
     private void PopulateInventoryUI()
     {
         for (int i = 0; i < size; i++)
@@ -51,6 +56,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Find a ScriptableBlock by its name
+    /// </summary>
     public ScriptableBlock GetBlockBy(string name)
     {
         ScriptableBlock block = blocks.Find(x => x.name == name);

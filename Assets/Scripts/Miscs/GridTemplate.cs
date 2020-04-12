@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Draw Gizmo grid and responsible for finding the nearest position to insert a block
@@ -29,11 +27,6 @@ public class GridTemplate : MonoBehaviour
 
         result += transform.position;
 
-        if (result.y < 0)
-        {
-            Debug.Log("GetNearestPointOnGrid::y" + result.y);
-        }
-
         return result;
     }
 
@@ -42,6 +35,9 @@ public class GridTemplate : MonoBehaviour
         //DrawGizmos();
     }
 
+    /// <summary>
+    /// Draw Gizmo points that represent the Grid - used to debug
+    /// </summary>
     private void DrawGizmos()
     {
         Gizmos.color = Color.grey;
@@ -62,6 +58,9 @@ public class GridTemplate : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Draw the ground of the board dynamically
+    /// </summary>
     internal void DrawBoardGround()
     {
         GameObject container = new GameObject("GroundContainer");

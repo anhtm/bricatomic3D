@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Block Object", menuName = "Block")]
 [System.Serializable]
@@ -8,6 +6,6 @@ public class ScriptableBlock : ScriptableObject
 {
     public Sprite sprite;
     public GameObject prefab;
-    public string name;
+    public new string name;
     public int id;
 }

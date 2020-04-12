@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages item selection in inventory panel
+/// </summary>
 public class SlotActions : MonoBehaviour
 {
     Button button;
 
-    // Start is called before the first frame update
     void Start()
     {
         button = gameObject.GetComponent<Button>();

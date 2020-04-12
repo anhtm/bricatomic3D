@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manages value changes in UI
+/// </summary>
 public class UIManager : MonoBehaviour
 {
-
     public Dropdown Dropdown;
     public Button InGameMenuTrigger;
 
@@ -29,7 +28,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         Dropdown.onValueChanged.AddListener(delegate {
-            myDropdownValueChangedHandler(Dropdown);
+            SelectDropdownValue(Dropdown);
         });
 
         InGameMenuTrigger.onClick.AddListener(ToggleInGameMenu);
@@ -41,7 +40,7 @@ public class UIManager : MonoBehaviour
         InGameMenuTrigger.onClick.RemoveAllListeners();
     }
 
-    private void myDropdownValueChangedHandler(Dropdown target)
+    private void SelectDropdownValue(Dropdown target)
     {
         ModeManager.Instance.UpdateMode(target.value);
     }
