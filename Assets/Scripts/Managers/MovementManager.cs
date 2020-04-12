@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Manages movement lock on certain axis
+/// </summary>
 public class MovementManager : MonoBehaviour
 {
     public Axis axisLock;

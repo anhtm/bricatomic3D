@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages switching between modes
+/// </summary>
 public class ModeManager : MonoBehaviour
 {
     public BlockAction currentMode = BlockAction.None;
@@ -32,7 +34,6 @@ public class ModeManager : MonoBehaviour
         PopulateCursorMapper();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         SetCursor();
@@ -61,7 +62,7 @@ public class ModeManager : MonoBehaviour
     {   
         for (var i = 0; i < cursorTextures.Count; i++)
         {
-            cursorMapper.Add((BlockAction)i, cursorTextures[i]);
+            cursorMapper.Add((BlockAction) i, cursorTextures[i]);
         }
     }
 

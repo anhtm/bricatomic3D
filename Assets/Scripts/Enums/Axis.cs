@@ -1,5 +1,4 @@
-﻿using System;
-public enum Axis
+﻿public enum Axis
 {
     X,
     Y,

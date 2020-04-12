@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+/// <summary>
+/// Utility methods to Save and Load game
+/// </summary>
 public static class SaveLoad {
 
 	public static List<Game> savedGames = new List<Game>();
+    private static readonly string fileLocation = Application.persistentDataPath + "/savedGames.gd";
 
-	//it's static so we can call it from anywhere
+	// Set to static so it can be called from anywhere
 	public static void Save() {
         if (!savedGames.Contains(Game.current))
         {
@@ -15,17 +19,16 @@ public static class SaveLoad {
 		}
 
 		BinaryFormatter bf = new BinaryFormatter();
-		//Application.persistentDataPath is a string, so if you wanted you can put that into debug.log if you want to know where save games are located
-		FileStream file = File.Create(Application.persistentDataPath + "/savedGames.gd"); //you can call it anything you want
+		FileStream file = File.Create(fileLocation);
 		bf.Serialize(file, savedGames);
 		file.Close();
 	}	
 	
 	public static void Load() {
-		if (File.Exists(Application.persistentDataPath + "/savedGames.gd")) {
+		if (File.Exists(fileLocation)) {
 			BinaryFormatter bf = new BinaryFormatter();
-			FileStream file = File.Open(Application.persistentDataPath + "/savedGames.gd", FileMode.Open);
-			savedGames = (List<Game>)bf.Deserialize(file);
+			FileStream file = File.Open(fileLocation, FileMode.Open);
+			savedGames = (List<Game>) bf.Deserialize(file);
 			file.Close();
 		}
 	}

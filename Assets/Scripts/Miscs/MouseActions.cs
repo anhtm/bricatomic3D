@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Control mouse actions with camera movement/rotation/zoom
+/// </summary>
 public class MouseActions : MonoBehaviour
 {
     [Header("Drag")]
@@ -17,8 +18,8 @@ public class MouseActions : MonoBehaviour
     public GameObject Target;
 
     [Header("Zoom")]
-    float minFov = 10;
-    float maxFoV = 100;
+    readonly float minFov = 10;
+    readonly float maxFoV = 100;
     [Range(0, 50)]
     public float zoomSensitivity = 10.0f;
 

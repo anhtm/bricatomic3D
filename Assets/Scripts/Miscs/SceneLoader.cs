@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Load next scene with a timer
+/// </summary>
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] float timer = 3.0f;
@@ -12,7 +13,7 @@ public class SceneLoader : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer < 0)
         {
-            // load next scenes
+            // load next scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
