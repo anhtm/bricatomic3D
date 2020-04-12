@@ -4092,11 +4092,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instructions:
-  - Press A to activate ADD mode
-  - Press E to activate EDIT (MOVE) mode
-  - Press D to activate DELETE mode
+  - Press A to activate ADD mode to add block
+  - Press E to activate EDIT mode to move block
+  - Press D to activate DELETE mode to delete block
   - You're all set!
   instructionPanel: {fileID: 507976502}
+  panelTimeout: 3
 --- !u!1 &1798934734
 GameObject:
   m_ObjectHideFlags: 0
