@@ -4,6 +4,6 @@ A block building platform using Unity, inspired by Minecraft & LEGO.
 
 ## Demo Video
 
-Click on image to open link
+DEMO: https://youtu.be/TyyEwuk0NS4
 
 [![bricatomic demo](./Assets/Demo/demo_img.png)](https://youtu.be/TyyEwuk0NS4)
